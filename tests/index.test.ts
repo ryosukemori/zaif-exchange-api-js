@@ -1,5 +1,5 @@
 import { hello } from '../src/index';
 
 test('plus', () => {
-  expect(hello()).toBe(3);
+  expect(hello()).toBe(2);
 });
