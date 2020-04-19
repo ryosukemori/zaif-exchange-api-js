@@ -1,0 +1,6 @@
+dist
+.DS_Store
+Thumbds.db
+node_modules
+dist-cjs
+dist-esm
