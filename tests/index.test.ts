@@ -18,12 +18,12 @@ test('spot-call', async () => {
 })
 
 test('called-limit-over', async () => {
-  configure.setConfig({ callPerSeconds: 5 })
+  configure.setConfig({ callPerSeconds: 1 })
   jest.setTimeout(10000);
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 5; i++) {
     await Zaif.Spot.getCurrency()
   }
-  expect(configure.callPerSeconds).toBe(5)
-  expect(connection.calledLimitOver).toBeGreaterThanOrEqual(5)
+  expect(configure.callPerSeconds).toBe(1)
+  expect(connection.calledLimitOver).toBeGreaterThanOrEqual(4)
 })
