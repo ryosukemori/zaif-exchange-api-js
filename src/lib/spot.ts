@@ -118,14 +118,14 @@ export const getBoard = async (base: string = 'btc', quote: string = 'jpy'): Pro
     throw new Error(res.data.error)
   }
 
-  const asks = res.data.asks.map((item: Array<number>) => {
+  const asks = res.data.asks.map((item: Array<number>): IBoardChild => {
     return {
       price: item[0],
       amount: item[1],
     }
   })
 
-  const bids = res.data.asks.map((item: Array<number>) => {
+  const bids = res.data.asks.map((item: Array<number>): IBoardChild => {
     return {
       price: item[0],
       amount: item[1],
@@ -141,7 +141,7 @@ export const getBoard = async (base: string = 'btc', quote: string = 'jpy'): Pro
  * @param quote ペア指定通貨
  * @return Ask板情報の取得
  */
-export const getBoardAsks = async (base: string = 'btc', quote: string = 'jpy'): Promise<Array<Object>> => {
+export const getBoardAsks = async (base: string = 'btc', quote: string = 'jpy'): Promise<Array<IBoardChild>> => {
   const res = await getBoard(base, quote)
 
   return res.asks
@@ -153,13 +153,18 @@ export const getBoardAsks = async (base: string = 'btc', quote: string = 'jpy'):
  * @param quote ペア指定通貨
  * @return Bids板情報の取得
  */
-export const getBoardBids = async (base: string = 'btc', quote: string = 'jpy'): Promise<Array<Object>> => {
+export const getBoardBids = async (base: string = 'btc', quote: string = 'jpy'): Promise<Array<IBoardChild>> => {
   const res = await getBoard(base, quote)
 
   return res.bids
 }
 
 export interface IBoard {
-  asks: Array<Object>
-  bids: Array<Object>
+  asks: Array<IBoardChild>
+  bids: Array<IBoardChild>
+}
+
+export interface IBoardChild {
+  price: number
+  amount: number
 }
