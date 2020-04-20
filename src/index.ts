@@ -1,3 +1,1 @@
-export const hello = () => {
-  return 1 + 1
-}
+export * as Spot from './lib/spot'

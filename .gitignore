@@ -4,3 +4,4 @@ Thumbds.db
 node_modules
 dist-cjs
 dist-esm
+.env
