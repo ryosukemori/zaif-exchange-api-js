@@ -1,4 +1,6 @@
 import * as Zaif from '../src/index'
+import configure from '../src/lib/configure'
+import connection from '../src/lib/connection'
 
 test('spot-call', async () => {
   let res
@@ -13,4 +15,15 @@ test('spot-call', async () => {
 
   res = await Zaif.Spot.getPairAll()
   expect(res).toBeInstanceOf(Array)
+})
+
+test('called-limit-over', async () => {
+  configure.setConfig({ callPerSeconds: 5 })
+  jest.setTimeout(10000);
+
+  for (let i = 0; i < 30; i++) {
+    await Zaif.Spot.getCurrency()
+  }
+  expect(configure.callPerSeconds).toBe(5)
+  expect(connection.calledLimitOver).toBeGreaterThanOrEqual(5)
 })

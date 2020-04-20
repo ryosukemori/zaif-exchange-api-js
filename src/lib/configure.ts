@@ -36,7 +36,7 @@ class Configure {
       process.env.SECRET ? process.env.SECRET : null
 
     const callPerSeconds = configure.callPerSeconds ? configure.callPerSeconds : Number(process.env.CALLPERSECONDS)
-    this.callPerSeconds = callPerSeconds >= 10 ? callPerSeconds : 10
+    this.callPerSeconds = callPerSeconds <= 10 ? callPerSeconds : 10
   }
 }
 

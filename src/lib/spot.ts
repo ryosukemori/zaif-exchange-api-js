@@ -1,10 +1,9 @@
-import Axios from 'axios'
-import Configure from './configure'
+import Connection from './connection'
 
 const params = {
   endpoint: {
-    currency: `${Configure.endpoint}1/currencies`,
-    pair: `${Configure.endpoint}1/currency_pairs`
+    currency: `1/currencies`,
+    pair: `1/currency_pairs`
   },
 }
 
@@ -14,10 +13,7 @@ const params = {
  * @return 通貨情報オブジェクト
  */
 export const getCurrency = async (name: string = 'btc'): Promise<any | null> => {
-  const ret = await Axios.get(`${params.endpoint.currency}/${name}`)
-  if (ret.status !== 200) {
-    throw new Error(ret.statusText)
-  }
+  const ret = await Connection.get(`${params.endpoint.currency}/${name}`)
 
   return ret.data.length > 0 ? ret.data[0] : null
 }
@@ -27,10 +23,7 @@ export const getCurrency = async (name: string = 'btc'): Promise<any | null> => 
  * @return 通貨情報オブジェクトの配列
  */
 export const getCurrencyAll = async (): Promise<Array<any>> => {
-  const ret = await Axios.get(`${params.endpoint.currency}/all`)
-  if (ret.status !== 200) {
-    throw new Error(ret.statusText)
-  }
+  const ret = await Connection.get(`${params.endpoint.currency}/all`)
   return ret.data
 }
 
@@ -42,10 +35,8 @@ export const getCurrencyAll = async (): Promise<Array<any>> => {
  */
 export const getPair = async (base: string = 'btc', quote: string = 'jpy'): Promise<any | null> => {
   const pair = `${base}_${quote}`
-  const ret = await Axios.get(`${params.endpoint.pair}/${pair}`)
-  if (ret.status !== 200) {
-    throw new Error(ret.statusText)
-  }
+  const ret = await Connection.get(`${params.endpoint.pair}/${pair}`)
+
   return ret.data.length > 0 ? ret.data[0] : null
 }
 
@@ -54,9 +45,6 @@ export const getPair = async (base: string = 'btc', quote: string = 'jpy'): Prom
  * @return ペア情報オブジェクトの配列
  */
 export const getPairAll = async (): Promise<Array<any>> => {
-  const ret = await Axios.get(`${params.endpoint.pair}/all`)
-  if (ret.status !== 200) {
-    throw new Error(ret.statusText)
-  }
+  const ret = await Connection.get(`${params.endpoint.pair}/all`)
   return ret.data
 }
