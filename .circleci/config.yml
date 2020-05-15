@@ -6,7 +6,9 @@ jobs:
     executor:
       name: node/default
     steps:
-      - run: echo ${ENV} > ~/.env
+      - run:
+        name: Decode dotenv file
+        command: echo $ENV_FILE | base64 --decode > .env
       - checkout
       - node/with-cache:
           steps:
