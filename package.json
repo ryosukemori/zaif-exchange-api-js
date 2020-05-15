@@ -14,7 +14,7 @@
     "build:esm": "tsc --project . --module es2015 --outDir ./dist-esm",
     "lint": "eslint .",
     "fix": "eslint --fix .",
-    "test": "jest tests/index.test.ts --verbose false --env=node"
+    "test": "jest tests --verbose false --env=node"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",

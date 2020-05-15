@@ -6,6 +6,7 @@ jobs:
     executor:
       name: node/default
     steps:
+      - run: echo ${ENV} > ~/.env
       - checkout
       - node/with-cache:
           steps:
