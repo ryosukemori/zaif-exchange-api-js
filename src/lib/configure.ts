@@ -4,7 +4,7 @@ require('dotenv').config()
  * 基本設定
  */
 class Configure {
-  static BASIC_ENDPOINT: string = 'https://api.zaif.jp/api/'
+  static BASIC_ENDPOINT: string = 'https://api.zaif.jp/'
 
   // APIエンドポイント
   endpoint: string = Configure.BASIC_ENDPOINT

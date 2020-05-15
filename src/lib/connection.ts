@@ -1,3 +1,5 @@
+const dateformat = require('dateformat');
+import crypto from 'crypto'
 import axios from 'axios'
 import configure from './configure'
 
@@ -27,22 +29,71 @@ class Connection {
     return await this.connect({ method: 'get', url: configure.endpoint + url, params })
   }
 
+  public async post(url: string, data: Object = {}, options: any = {}) {
+    const sign = this.createSign(data)
+
+    const config = {
+      method: 'post',
+      url: configure.endpoint + url,
+      data: sign.params,
+      headers: {
+        key: configure.key,
+        sign: sign.sign,
+      },
+      ...options
+    }
+    return await this.connect(config)
+  }
+
+  private createSign(data: Object) {
+    const params = new URLSearchParams()
+    Object.entries(data).forEach(v => {
+      params.append(v[0], v[1])
+    })
+
+    // create nonce
+    const nonce = dateformat(new Date(), 'yyyymmdd.HHMMssL')
+
+    params.append('nonce', nonce.toString())
+
+    if (configure.secret === null) {
+      throw Error('シークレットキーが設定されていない')
+    }
+
+    const hmac = crypto.createHmac('sha512', configure.secret || '')
+    hmac.update(params.toString())
+
+    return {
+      nonce,
+      sign: hmac.digest('hex'),
+      params
+    }
+  }
+
   /**
    * 通信する
    * @param method
    */
-  private async connect(config: Object) {
+  private async connect(config: any) {
     // 呼び出し頻度の制御
     await this.waitElapsedTime()
 
     let res
     try {
       res = await axios(config)
+      this.calledPerSeconds++
 
       if (res.status !== 200) {
         throw new Error(res.statusText)
       }
-      this.calledPerSeconds++
+
+      if (res.data.error) {
+        throw new Error(res.data.error)
+      }
+
+      if (config.method === 'post' && res.data.success !== 1) {
+        throw new Error()
+      }
 
       return res
     }
@@ -53,6 +104,7 @@ class Connection {
 
   /**
    * 設定された秒間コール数範囲内かどうか
+   * Todo: 指定時間以内に指定回数のチェック　を可能にする
    */
   private async waitElapsedTime() {
     // 最大秒間呼び出し回数に満たない場合

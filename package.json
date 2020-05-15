@@ -45,6 +45,9 @@
     ]
   },
   "dependencies": {
-    "dotenv": "^8.2.0"
+    "date-utils": "^1.2.21",
+    "dateformat": "^3.0.3",
+    "dotenv": "^8.2.0",
+    "uuidv4": "^6.0.8"
   }
 }

@@ -2,12 +2,12 @@ import Connection from './connection'
 
 const params = {
   endpoint: {
-    currency: '1/currencies',
-    pair: '1/currency_pairs',
-    last: '1/last_price',
-    ticker: '1/ticker',
-    trades: '1/trades',
-    board: '1/depth',
+    currency: 'api/1/currencies',
+    pair: 'api/1/currency_pairs',
+    last: 'api/1/last_price',
+    ticker: 'api/1/ticker',
+    trades: 'api/1/trades',
+    board: 'api/1/depth',
   },
 }
 
@@ -63,10 +63,6 @@ export const getLastPrice = async (base: string = 'btc', quote: string = 'jpy'):
   const pair = `${base}_${quote}`
   const res = await Connection.get(`${params.endpoint.last}/${pair}`)
 
-  if (res.data.error) {
-    throw new Error(res.data.error)
-  }
-
   return Number(res.data.last_price)
 }
 
@@ -79,10 +75,6 @@ export const getLastPrice = async (base: string = 'btc', quote: string = 'jpy'):
 export const getTicker = async (base: string = 'btc', quote: string = 'jpy'): Promise<any> => {
   const pair = `${base}_${quote}`
   const res = await Connection.get(`${params.endpoint.ticker}/${pair}`)
-
-  if (res.data.error) {
-    throw new Error(res.data.error)
-  }
 
   return res.data
 }
@@ -113,10 +105,6 @@ export const getTradeHistories = async (base: string = 'btc', quote: string = 'j
 export const getBoard = async (base: string = 'btc', quote: string = 'jpy'): Promise<IBoard> => {
   const pair = `${base}_${quote}`
   const res = await Connection.get(`${params.endpoint.board}/${pair}`)
-
-  if (res.data.error) {
-    throw new Error(res.data.error)
-  }
 
   const asks = res.data.asks.map((item: Array<number>): IBoardChild => {
     return {
