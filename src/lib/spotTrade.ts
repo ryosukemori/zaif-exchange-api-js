@@ -9,11 +9,11 @@ const params = {
  * 自身の口座取引情報を取得します
  * @param level 1=取引回数を取得する
  */
-export const getAccountMyInfo = async (level: Number = 0) => {
+export const getAccountMyInfo = async (level: number = 0) => {
   const data = {
     method: level ? 'get_info' : 'get_info2',
   }
-  const res = await Connection.post(params.endpoint, data)
+  const res = await Connection.post(params.endpoint, data, 1000)
   return res.data.return
 }
 
@@ -76,16 +76,16 @@ export const getTradeHistory = async (options: ITradeHistory = {
 type Sort = 'ASC' | 'DESC'
 
 export interface ITradeHistory {
-  from: Number
-  count?: Number
-  from_id?: Number
-  end_id?: Number
+  from: number
+  count?: number
+  from_id?: number
+  end_id?: number
   order?: Sort
   since?: Date
   end?: Date
   currency?: {
-    base: String
-    quote: String
+    base: string
+    quote: string
   }
   is_token?: Boolean
 }

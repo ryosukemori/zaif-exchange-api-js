@@ -1,6 +1,4 @@
 import * as Zaif from '../src/index'
-import configure from '../src/lib/configure'
-import connection from '../src/lib/connection'
 test('spot-getCurrency', async () => {
   let res = await Zaif.Spot.getCurrency()
   expect(res.name).toBe('btc')
@@ -126,13 +124,3 @@ test('spot-getBoardBids', async () => {
   expect(typeof res[0].amount).toBe('number')
 })
 
-test('called-limit-over', async () => {
-  configure.setConfig({ callPerSeconds: 1 })
-  jest.setTimeout(10000);
-
-  for (let i = 0; i < 5; i++) {
-    await Zaif.Spot.getCurrency()
-  }
-  expect(configure.callPerSeconds).toBe(1)
-  expect(connection.calledLimitOver).toBeGreaterThanOrEqual(4)
-})
