@@ -24,8 +24,75 @@ test('spotTrade-getIdMyInfo', async () => {
 })
 
 test('spotTrade-getTradeHistory', async () => {
-  const res = await Zaif.SpotTrade.getTradeHistory()
-  expect(res.success).toBe(1)
+  jest.setTimeout(15000);
+  let res = await Zaif.SpotTrade.getTradeHistory()
+  expect(typeof res).toBe('object')
 
-  // Todo: パラメータ指定テスト
+  const currency = {
+    base: 'xem',
+    quote: 'jpy'
+  }
+  res = await Zaif.SpotTrade.getTradeHistory({ currency })
+  expect(typeof res).toBe('object')
+})
+
+test('spotTrade-getUncommittedOrderList', async () => {
+  let res = await Zaif.SpotTrade.getUncommittedOrderList()
+  console.log(res)
+  expect(typeof res).toBe('object')
+
+  const currency = {
+    base: 'xem',
+    quote: 'jpy'
+  }
+  res = await Zaif.SpotTrade.getUncommittedOrderList({ currency })
+  console.log(res)
+  expect(typeof res).toBe('object')
+})
+
+test('spotTrade-getUncommittedOrderListAll', async () => {
+  let res = await Zaif.SpotTrade.getUncommittedOrderListAll()
+  console.log(res)
+  expect(typeof res).toBe('object')
+})
+
+test('spotTrade-order', async () => {
+  const options = {
+    currency: {
+      base: 'xem',
+      quote: 'jpy'
+    },
+    price: 1000000,
+    amount: 1,
+    limit: 80,
+    comment: 'comment test'
+  }
+  let res = await Zaif.SpotTrade.order('sell', options)
+  expect(typeof res.order_id).toBe('number')
+})
+
+test('spotTrade-cancel', async () => {
+  const orderOptions = {
+    currency: {
+      base: 'xem',
+      quote: 'jpy'
+    },
+    price: 1000000,
+    amount: 1,
+    limit: 80,
+    comment: 'comment test'
+  }
+  const orderRes = await Zaif.SpotTrade.order('sell', orderOptions)
+
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  const options = {
+    currency: {
+      base: 'xem',
+      quote: 'jpy'
+    },
+    order_id: orderRes.order_id
+  }
+  const res = await Zaif.SpotTrade.cancel(options)
+  expect(res.order_id).toBe(orderRes.order_id)
 })
