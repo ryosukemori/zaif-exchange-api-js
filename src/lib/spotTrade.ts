@@ -143,6 +143,52 @@ export const cancel = async (options: ICancel) => {
   return res.data.return
 }
 
+export const withdraw = async (options: IWithdraw) => {
+  const data: any = {
+    method: 'withdraw',
+    ...options
+  }
+
+  console.log(data)
+
+  const res = await Connection.post(params.endpoint, data)
+  return res.data.return
+}
+
+export const getDepositHistory = async (options: IDepositHistory = {}) => {
+  const data: any = {
+    method: 'deposit_history',
+    currency: options.currency ? options.currency : 'btc'
+  }
+  if (options.count) data.count = options.count
+  if (options.order) data.order = options.order
+  if (options.from) data.from = options.from
+  if (options.from_id) data.from_id = options.from_id
+  if (options.end_id) data.end_id = options.end_id
+  if (options.since) data.since = Math.floor(options.since.getTime() / 1000)
+  if (options.end) data.end = Math.floor(options.end.getTime() / 1000)
+
+  const res = await Connection.post(params.endpoint, data, 6000)
+  return res.data.return
+}
+
+export const getWithdrawHistory = async (options: IDepositHistory = {}) => {
+  const data: any = {
+    method: 'withdraw_history',
+    currency: options.currency ? options.currency : 'btc'
+  }
+  if (options.count) data.count = options.count
+  if (options.order) data.order = options.order
+  if (options.from) data.from = options.from
+  if (options.from_id) data.from_id = options.from_id
+  if (options.end_id) data.end_id = options.end_id
+  if (options.since) data.since = Math.floor(options.since.getTime() / 1000)
+  if (options.end) data.end = Math.floor(options.end.getTime() / 1000)
+
+  const res = await Connection.post(params.endpoint, data, 6000)
+  return res.data.return
+}
+
 
 type Sort = 'ASC' | 'DESC'
 type Action = 'buy' | 'sell'
@@ -192,4 +238,23 @@ export interface ICancel {
     quote: string
   }
   is_token?: boolean
+}
+
+export interface IWithdraw {
+  currency: string
+  address: string
+  message?: string
+  amount: number
+  opt_fee?: number
+}
+
+export interface IDepositHistory {
+  currency?: string
+  from?: number
+  count?: number
+  from_id?: number
+  end_id?: number
+  order?: Sort
+  since?: Date
+  end?: Date
 }

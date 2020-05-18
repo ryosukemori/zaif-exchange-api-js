@@ -38,7 +38,6 @@ test('spotTrade-getTradeHistory', async () => {
 
 test('spotTrade-getUncommittedOrderList', async () => {
   let res = await Zaif.SpotTrade.getUncommittedOrderList()
-  console.log(res)
   expect(typeof res).toBe('object')
 
   const currency = {
@@ -46,13 +45,11 @@ test('spotTrade-getUncommittedOrderList', async () => {
     quote: 'jpy'
   }
   res = await Zaif.SpotTrade.getUncommittedOrderList({ currency })
-  console.log(res)
   expect(typeof res).toBe('object')
 })
 
 test('spotTrade-getUncommittedOrderListAll', async () => {
   let res = await Zaif.SpotTrade.getUncommittedOrderListAll()
-  console.log(res)
   expect(typeof res).toBe('object')
 })
 
@@ -95,4 +92,44 @@ test('spotTrade-cancel', async () => {
   }
   const res = await Zaif.SpotTrade.cancel(options)
   expect(res.order_id).toBe(orderRes.order_id)
+})
+
+test('spotTrade-getDepositHistory', async () => {
+  jest.setTimeout(15000);
+  let res = await Zaif.SpotTrade.getDepositHistory()
+
+  expect(typeof res).toBe('object')
+
+  const data: any = {
+    currency: 'jpy',
+    from: 0,
+    count: 3,
+    from_id: 0,
+    end_id: 999999,
+    order: "ASC",
+    since: new Date(0),
+    end: new Date()
+  }
+  res = await Zaif.SpotTrade.getDepositHistory(data)
+  expect(Object.keys(res).length).toBe(3)
+})
+
+test('spotTrade-getWithdrawHistory', async () => {
+  jest.setTimeout(15000);
+  let res = await Zaif.SpotTrade.getWithdrawHistory()
+
+  expect(typeof res).toBe('object')
+
+  const data: any = {
+    currency: 'jpy',
+    from: 0,
+    count: 3,
+    from_id: 0,
+    end_id: 999999,
+    order: "ASC",
+    since: new Date(0),
+    end: new Date()
+  }
+  res = await Zaif.SpotTrade.getWithdrawHistory(data)
+  expect(Object.keys(res).length).toBe(3)
 })
