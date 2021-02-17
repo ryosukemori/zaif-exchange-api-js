@@ -102,7 +102,7 @@ class Connection {
       }
 
       if (config.method === 'post' && res.data.success !== 1) {
-        throw new Error()
+        throw new Error(res.data.return)
       }
 
       return res

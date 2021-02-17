@@ -1,9 +1,10 @@
 import * as Zaif from '../src/index'
+import Types from '../src/@types'
 // import configure from '../src/lib/configure'
 // import connection from '../src/lib/connection'
 
 test('spotTrade-getAccountMyInfo', async () => {
-  let res = await Zaif.SpotTrade.getAccountMyInfo()
+  let res: Types.AccountMyInfoResponse = await Zaif.SpotTrade.getAccountMyInfo()
   expect(typeof res.funds.BCH).toBe('number')
   expect(res.trade_count).toBeUndefined()
 

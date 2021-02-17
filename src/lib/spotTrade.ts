@@ -1,4 +1,6 @@
 import Connection from './connection'
+import { AccountMyInfoResponse, ZaifApiResponse } from '@types'
+import { AxiosResponse } from 'axios'
 
 const params = {
   endpoint: 'tapi'
@@ -13,7 +15,7 @@ export const getAccountMyInfo = async (level: number = 0) => {
   const data = {
     method: level ? 'get_info' : 'get_info2',
   }
-  const res = await Connection.post(params.endpoint, data)
+  const res: AxiosResponse<ZaifApiResponse<AccountMyInfoResponse>> = await Connection.post(params.endpoint, data)
   return res.data.return
 }
 
